@@ -1,4 +1,4 @@
-package br.edu.unicesumar.pubsub.service;
+package br.edu.unicesumar.pubsub.amqp;
 
 import javax.annotation.PostConstruct;
 
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RabbitMqConnection {
+public class RabbitStartup {
 
     @Autowired
     private AmqpAdmin amqpAdmin;
@@ -25,12 +25,12 @@ public class RabbitMqConnection {
 
         Queue filaTeste = new Queue("fila-teste", true, false, false);
         FanoutExchange fanoutExchangeTeste = new FanoutExchange("fanout-exchange-teste", true, false);
-        Binding bindingTeste = new Binding(filaTeste.getName(), DestinationType.QUEUE, fanoutExchangeTeste.getName(), null, null);
+        Binding bindingTeste = new Binding(filaTeste.getName(), DestinationType.QUEUE, fanoutExchangeTeste.getName(), "", null);
         this.amqpAdmin.declareQueue(filaTeste);
         this.amqpAdmin.declareExchange(fanoutExchangeTeste);
         this.amqpAdmin.declareBinding(bindingTeste);
 
-        this.rabbitTemplate.convertAndSend(fanoutExchangeTeste.getName(), null, "message");
+        this.rabbitTemplate.convertAndSend(fanoutExchangeTeste.getName(), "", "message");
 
     }
 
