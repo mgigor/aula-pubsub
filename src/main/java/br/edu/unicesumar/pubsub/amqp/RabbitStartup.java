@@ -29,7 +29,9 @@ public class RabbitStartup {
         Queue myQueue = new Queue(Message.myUser, true, false, false);
         Binding bindingMsgDirectMyQueue = new Binding(Message.myUser, DestinationType.QUEUE, msgDirect.getName(), Message.myUser, null);
 
-        // declare
+        this.amqpAdmin.declareExchange(msgDirect);
+        this.amqpAdmin.declareQueue(myQueue);
+        this.amqpAdmin.declareBinding(bindingMsgDirectMyQueue);
     }
 
        /* 
