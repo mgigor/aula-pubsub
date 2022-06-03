@@ -6,7 +6,6 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Binding.DestinationType;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,22 +18,21 @@ public class RabbitStartup {
     @Autowired
     private AmqpAdmin amqpAdmin;
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-
     @PostConstruct
-    private void postConstruct() {
+    private void postConstruct(String chat) {
         DirectExchange directExchange = new DirectExchange("msg-direct", true, false);
 
-        Queue myQueue = new Queue("Message.myUser", true, false, false);
-        
-        Binding bindingMsgDirectMyQueue = new Binding(Message.myUser, DestinationType.QUEUE, directExchange.getName(), Message.myUser, null);
-    
-        //declare
+        Queue myQueue = new Queue(Message.myUser, true, false, false);
+
+        Binding bindingMsgDirectMyQueue = new Binding(Message.myUser, DestinationType.QUEUE, directExchange.getName(),
+                Message.myUser, null);
+
+        // declare
         this.amqpAdmin.declareExchange(directExchange);
         this.amqpAdmin.declareQueue(myQueue);
         this.amqpAdmin.declareBinding(bindingMsgDirectMyQueue);
     }
+
     // @PostConstruct
     // private void adiciona() {
 
