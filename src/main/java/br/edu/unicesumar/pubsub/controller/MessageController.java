@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.amqp.core.Binding;
 
 import br.edu.unicesumar.pubsub.dto.Message;
@@ -59,10 +60,10 @@ public class MessageController {
     }
 
     @PostMapping("/direct/{username}")
+
     public ResponseEntity<Void> sendDirectMessage(@PathVariable(name = "username") String username, @RequestBody Message msg) {
         this.rabbitTemplate.convertAndSend("msg-direct", username, msg);
         return ResponseEntity.ok().build();
     }
-
 
 }
